@@ -6,8 +6,6 @@ import { Switch, Route } from 'react-router-dom'
 import store from "./store";
 import SongBook from "./song-book/SongBook";
 
-import App from "./App";
-
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>

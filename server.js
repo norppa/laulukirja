@@ -22,4 +22,4 @@ app.get('*', (req,res) => {
     res.sendFile('/client/build/index.html');
 });
 
-app.listen(process.env.PORT, () => console.log('Ready!'))
+app.listen(process.env.PORT, () => console.log('Server listening on port ' + process.env.PORT))
