@@ -1,16 +1,21 @@
 import { combineReducers } from 'redux'
 
-const aReducer = (state = {}, action) => {
+const initialSongs = {
+  songs: [],
+  selected: ''
+}
+
+const songReducer = (state = initialSongs, action) => {
   switch (action.type) {
-    case "SIMPLE_ACTION":
-      return {
-        result: action.payload
-      };
+    case "SET_ALL_SONGS":
+      return {...state, songs: action.payload }
+    case "SET_SELECTED":
+      return {...state, selected: action.payload}
     default:
       return state;
   }
 };
 
 export default combineReducers({
-  aReducer
+  songs: songReducer
 })
