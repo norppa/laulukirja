@@ -2,6 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 
+import SideBar from './sidebar/SideBar'
+import './SongBook.css'
+
 const apiUrl = "/api/songs";
 
 const mapStateToProps = state => {
@@ -17,7 +20,13 @@ class SongBook extends React.Component {
       .get(apiUrl)
       .then(response => {
         console.log("response", response.data);
-        this.props.dispatch({type: 'SET_ALL_SONGS', payload: response.data})
+        const songs = response.data
+        songs.sort((a, b) => {
+          if (a.name < b.name) return -1
+          else return 1
+        })
+        this.props.dispatch({type: 'SET_ALL_SONGS', payload: songs})
+        this.props.dispatch({type: 'SET_SELECTED', payload: songs[0]})
       })
       .catch(error => console.log("error fetching songs from db", error));
   }
@@ -26,9 +35,15 @@ class SongBook extends React.Component {
     console.log(this.props)
     return (
       <div className="SongBook">
-        {this.props.songs.map(song => (
-          <div>{song.name}</div>
-        ))}
+        <div className="Header">
+          <h1>Laulukirja</h1>
+        </div>
+
+        <SideBar />
+
+        <div className="Content">
+        {this.props.selected.name}
+        </div>
       </div>
     );
   }

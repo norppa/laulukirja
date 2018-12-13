@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { Switch, Route } from 'react-router-dom'
 import store from "./store";
-import SongBook from "./song-book/SongBook";
+import SongBook from "./songbook/SongBook";
 import './index.css'
 
 ReactDOM.render(

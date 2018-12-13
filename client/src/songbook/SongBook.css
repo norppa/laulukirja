@@ -1,0 +1,46 @@
+.SongBook {
+  display: grid;
+  grid-template-columns: auto minmax(200px, 400px) minmax(600px, 1000px) auto;
+  column-gap: 30px;
+}
+
+.Header {
+  grid-column: 2/4;
+  grid-row: 1/2;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  padding: 0px;
+}
+
+.SideBar {
+  grid-column: 2/3;
+  grid-row: 2/3;
+}
+
+.Content {
+  grid-column: 3/4;
+  grid-row: 2/3;
+}
+
+.roundedbox {
+  border: 2px solid black;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.65);
+}
+
+.header h1 {
+  color: #EEEEEE;
+  font-size: 4em;
+  text-shadow: 10px 10px 3px rgba(0,0,0,0.65);
+  margin: 5px;
+}
+
+.SideBar {
+  padding: 25px;
+}
+
+.songlink:hover, .songlink.selected {
+  cursor:pointer;
+  font-weight: bold;
+}
