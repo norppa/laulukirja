@@ -3,15 +3,23 @@ import { combineReducers } from "redux";
 const initialSongs = {
   songs: [],
   selected: null,
-  view: {}
+  viewStates: []
 };
+
+const initialViewState = {
+  showInfo: false
+}
 
 const songReducer = (state = initialSongs, action) => {
   switch (action.type) {
     case "SET_ALL_SONGS":
-      return { ...state, songs: action.payload, view: action.payload.reduce((acc, cur) => ({...acc, [cur._id]: {}}), {})};
+      return {
+        ...state,
+        songs: action.payload,
+        viewStates: action.payload.map(song => initialViewState)
+      };
     case "SELECT_SONG":
-      console.log('selecting', { ...state, selected: action.payload })
+      console.log("selecting", { ...state, selected: action.payload });
       return { ...state, selected: action.payload };
     case "CHANGE_SONG": {
       let i = 0;
@@ -25,12 +33,13 @@ const songReducer = (state = initialSongs, action) => {
       return { ...state, selected: i };
     }
     case "TOGGLE_VIEW": {
-      const id = state.selected._id;
-      const oldSongView = state.view[id] ? state.view[id] : {}
-      const newSongView = { ...oldSongView, info: !oldSongView.info };
+      const i = state.selected
+      const oldViewState = state.viewStates[i]
+      const newViewState = { ...oldViewState, [action.payload]: !oldViewState[action.payload] };
+
       return {
         ...state,
-        view: { ...state.view, [id]: newSongView }
+        viewStates: state.viewStates.map((viewState, j) => j === i ? newViewState : viewState)
       };
     }
     default:

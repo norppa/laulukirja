@@ -35,7 +35,7 @@ class SongActions extends React.Component {
         <FaInfo
           className="song-menu-right"
           size={42}
-          onClick={() => this.props.dispatch({ type: "TOGGLE_VIEW" })}
+          onClick={() => this.props.dispatch({ type: "TOGGLE_VIEW", payload: 'showInfo' })}
         />
       </div>
     );

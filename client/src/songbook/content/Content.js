@@ -12,7 +12,7 @@ import "./Content.css";
 
 class Content extends React.Component {
   render() {
-    console.log(1, this.props.songs, this.props.selected)
+    console.log(1, this.props.viewState, this.props.selected)
     if (this.props.selected === null) {
       return (
         <div className="Content roundedbox">
@@ -25,7 +25,7 @@ class Content extends React.Component {
       <div className="Content roundedbox">
         <h2>{this.props.song.title}</h2>
         <SongActions />
-        {/* this.props.view[this.props.song._id].info ? "info" : "no info" */}
+        { this.props.viewState.showInfo ? "info" : "no info" }
         <SongBody />
       </div>
     );
@@ -37,7 +37,7 @@ const mapStateToProps = state => {
     song: state.songs.songs[state.songs.selected],
     songs: state.songs.songs,
     selected: state.songs.selected,
-    view: state.songs.view
+    viewState: state.songs.viewStates[state.songs.selected]
   };
 };
 
