@@ -16,7 +16,7 @@ class SongActions extends React.Component {
         <FaArrowLeft
           size={42}
           onClick={() =>
-            this.props.dispatch({ type: "CHANGE_SONG", payload: 1 })
+            this.props.dispatch({ type: "CHANGE_SONG", payload: -1 })
           }
         />
         <FaRandom
@@ -28,7 +28,7 @@ class SongActions extends React.Component {
         <FaArrowRight
           size={42}
           onClick={() =>
-            this.props.dispatch({ type: "CHANGE_SONG", payload: -1 })
+            this.props.dispatch({ type: "CHANGE_SONG", payload: 1 })
           }
         />
         <FaWrench className="song-menu-right" size={42} onClick={null} />
