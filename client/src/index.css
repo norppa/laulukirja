@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('./img/blue-music-notes-background.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
+
+  font-family: 'Acme', serif;
+  letter-spacing: 2px;
+  font-size: 130%;
+  color: lightgray;
+}
