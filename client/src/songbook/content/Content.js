@@ -12,7 +12,8 @@ import "./Content.css";
 
 class Content extends React.Component {
   render() {
-    if (!this.props.song._id) {
+    console.log(1, this.props.songs, this.props.selected)
+    if (this.props.selected === null) {
       return (
         <div className="Content roundedbox">
           <h2>Etusivu</h2>
@@ -20,13 +21,11 @@ class Content extends React.Component {
       );
     }
 
-    const viewInfo = this.props.view[this.props.song._id];
-
     return (
       <div className="Content roundedbox">
         <h2>{this.props.song.title}</h2>
         <SongActions />
-        {this.props.view[this.props.song._id].info ? "info" : "no info"}
+        {/* this.props.view[this.props.song._id].info ? "info" : "no info" */}
         <SongBody />
       </div>
     );
@@ -35,7 +34,9 @@ class Content extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    song: state.songs.selected,
+    song: state.songs.songs[state.songs.selected],
+    songs: state.songs.songs,
+    selected: state.songs.selected,
     view: state.songs.view
   };
 };

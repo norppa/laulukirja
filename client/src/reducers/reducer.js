@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 
 const initialSongs = {
   songs: [],
-  selected: {},
+  selected: null,
   view: {}
 };
 
@@ -11,7 +11,7 @@ const songReducer = (state = initialSongs, action) => {
     case "SET_ALL_SONGS":
       return { ...state, songs: action.payload, view: action.payload.reduce((acc, cur) => ({...acc, [cur._id]: {}}), {})};
     case "SELECT_SONG":
-      console.log('selecting', action.payload)
+      console.log('selecting', { ...state, selected: action.payload })
       return { ...state, selected: action.payload };
     case "CHANGE_SONG": {
       let i = 0;
@@ -19,10 +19,10 @@ const songReducer = (state = initialSongs, action) => {
         i = Math.floor(Math.random() * state.songs.length);
       } else {
         const l = state.songs.length;
-        i = state.songs.indexOf(state.selected) + action.payload;
+        i = state.selected + action.payload;
         i = i < 0 ? (i % l) + l : i % l;
       }
-      return { ...state, selected: state.songs[i] };
+      return { ...state, selected: i };
     }
     case "TOGGLE_VIEW": {
       const id = state.selected._id;

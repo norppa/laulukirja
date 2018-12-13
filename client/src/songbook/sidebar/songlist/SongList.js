@@ -3,13 +3,11 @@ import { connect } from "react-redux";
 import "./SongList.css";
 
 class SongList extends React.Component {
-  select = id => () => {
-    const song = this.props.songs.find(song => song._id === id);
-    this.props.dispatch({ type: "SELECT_SONG", payload: song });
+  select = i => () => {
+    this.props.dispatch({ type: "SELECT_SONG", payload: i });
   };
 
-  classes = song =>
-    song === this.props.selected ? "songlink selected" : "songlink";
+  classes = i => (i === this.props.selected ? "songlink selected" : "songlink");
 
   render() {
     return (
@@ -17,8 +15,8 @@ class SongList extends React.Component {
         {this.props.songs.map((song, i) => (
           <div
             key={song._id}
-            className={this.classes(song._id)}
-            onClick={this.select(song._id)}
+            className={this.classes(i)}
+            onClick={this.select(i)}
           >
             {song.title}
           </div>

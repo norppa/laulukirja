@@ -14,7 +14,7 @@ class SongBody extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    song: state.songs.selected
+    song: state.songs.songs[state.songs.selected]
   };
 };
 export default connect(mapStateToProps)(SongBody);
