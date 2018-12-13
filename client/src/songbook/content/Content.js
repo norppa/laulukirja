@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import SongBody from "./songbody/SongBody";
 import SongActions from "./songactions/SongActions";
 // import SongMenu from "./SongMenu";
-// import SongInfo from "./SongInfo";
+import SongInfo from "./songinfo/SongInfo";
 // import ViewTools from "./ViewTools";
 // import AdminTools from "./admintools/AdminTools";
 // import SongArea from "./songarea/SongArea";
@@ -25,7 +25,7 @@ class Content extends React.Component {
       <div className="Content roundedbox">
         <h2>{this.props.song.title}</h2>
         <SongActions />
-        { this.props.viewState.showInfo ? "info" : "no info" }
+        <SongInfo show={this.props.viewState.showInfo}/>
         <SongBody />
       </div>
     );
