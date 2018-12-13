@@ -1,0 +1,19 @@
+.Login {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.loginBox {
+  margin-top: 200px;
+  display: grid;
+  width: 400px;
+  padding: 20px;
+  text-align: center;
+}
+
+.loginBox input {
+  margin: 10px;
+  height: 2em;
+  border-radius: 5px;
+}
