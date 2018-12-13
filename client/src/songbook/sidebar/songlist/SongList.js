@@ -20,7 +20,7 @@ class SongList extends React.Component {
             className={this.classes(song._id)}
             onClick={this.select(song._id)}
           >
-            {song.name}
+            {song.title}
           </div>
         ))}
       </div>

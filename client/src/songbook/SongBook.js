@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 
 import SideBar from './sidebar/SideBar'
+import Content from './content/Content'
 import './SongBook.css'
 
 const apiUrl = "/api/songs";
@@ -19,20 +20,17 @@ class SongBook extends React.Component {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log("response", response.data);
         const songs = response.data
         songs.sort((a, b) => {
           if (a.name < b.name) return -1
           else return 1
         })
         this.props.dispatch({type: 'SET_ALL_SONGS', payload: songs})
-        this.props.dispatch({type: 'SET_SELECTED', payload: songs[0]})
       })
       .catch(error => console.log("error fetching songs from db", error));
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="SongBook">
         <div className="Header">
@@ -41,9 +39,7 @@ class SongBook extends React.Component {
 
         <SideBar />
 
-        <div className="Content">
-        {this.props.selected.name}
-        </div>
+        <Content />
       </div>
     );
   }

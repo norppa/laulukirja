@@ -1,0 +1,45 @@
+.Content {
+  padding: 30px;
+}
+
+h2 {
+  font-size: 2em;
+  padding-bottom: 4px;
+  margin: 10px 0px 0px 0px;
+}
+
+.SongActions {
+  margin: 10px 0px;
+}
+
+.SongActions * {
+  margin: 5px 20px;
+  cursor: pointer;
+}
+
+.song-menu-right {
+  float: right;
+}
+
+.SongInfo,
+.SongTools,
+.AdminTools {
+  border-radius: 20px;
+  border: 1px solid black;
+  margin: 10px 0px 20px 0px;
+  padding: 20px 20px 20px 20px;
+  background-color: #fefefe;
+  color: black;
+}
+
+a {
+  color: #005;
+}
+
+.FrontPage .song-tools-right {
+  display: none;
+}
+
+.SongTools input {
+  width: 5em;
+}

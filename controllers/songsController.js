@@ -4,6 +4,10 @@ const Song = require('../models/Song')
 
 const authError = (request) => {
     const authorization = request.get('authorization')
+    console.log('auth', authorization)
+    console.log(!authorization.toLowerCase())
+    console.log(!authorization.toLowerCase().startsWith('bearer '))
+    console.log(authorization.substring(0,7))
     if (!authorization || !authorization.toLowerCase().startsWith('bearer ')) {
         return { error: 'bearer token required' }
     }
