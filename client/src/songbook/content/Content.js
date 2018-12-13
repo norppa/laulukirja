@@ -12,7 +12,6 @@ import "./Content.css";
 
 class Content extends React.Component {
   render() {
-    console.log(1, this.props.viewState, this.props.selected)
     if (this.props.selected === null) {
       return (
         <div className="Content roundedbox">

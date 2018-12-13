@@ -1,58 +1,46 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react'
+import { connect } from 'react-redux'
 
 class SongInfo extends React.Component {
-  render() {
-    if (!this.props.show) {
-      return ''
-    }
-    
-    const {
-      title,
-      composer,
-      lyricist,
-      performer,
-      recording,
-      info
-    } = this.props.song;
 
-    return (
-      <div className="SongInfo">
-        <div className="song-info-left">
-          {composer ? (
-            <div>
-              Säveltäjä:&nbsp; {composer}
-              <br />
+    createDiv = (name, value, opt = {}) => {
+        if (!value) return null
+        const title = name ? <span style={{marginRight: '0.5em'}}>{name}:</span> : name
+        const content = opt.link
+            ? <a href={value}>{value}</a>
+            : value
+        return (
+            <div style={opt.style}>
+                {title} {content}
+                <br />
             </div>
-          ) : null}
-          {lyricist ? (
-            <div>
-              Sanoittaja:&nbsp; {lyricist}
-              <br />
+        )
+    }
+
+    render() {
+        if (!this.props.show) {
+            return ''
+        }
+
+        const { title, composer, lyricist, performer, recording, info } = this.props.song
+
+        return (
+            <div className="SongInfo">
+                <div className="song-info-left">
+                    {this.createDiv('Säveltäjä', composer)}
+                    {this.createDiv('Sanoittaja', lyricist)}
+                    {this.createDiv('Esittäjä', performer)}
+                    {this.createDiv('Tallenne', recording, {link: true})}
+                    {this.createDiv(null, info, {style: {marginTop: '0.5em'}})}
+                </div>
             </div>
-          ) : null}
-          {performer ? (
-            <div>
-              Esittäjä:&nbsp; {performer}
-              <br />
-            </div>
-          ) : null}
-          {recording ? (
-            <div>
-              Tallenne:&nbsp; <a href={recording}>{recording}</a>
-              <br />
-            </div>
-          ) : null}
-          {info ? <div>{info}</div> : null}
-        </div>
-      </div>
-    );
-  }
+        )
+    }
 }
 
 const mapStateToProps = state => {
-  return {
-    song: state.songs.songs[state.songs.selected]
-  };
-};
-export default connect(mapStateToProps)(SongInfo);
+    return {
+        song: state.songs.songs[state.songs.selected]
+    }
+}
+export default connect(mapStateToProps)(SongInfo)

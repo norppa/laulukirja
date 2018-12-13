@@ -19,7 +19,6 @@ const songReducer = (state = initialSongs, action) => {
         viewStates: action.payload.map(song => initialViewState)
       };
     case "SELECT_SONG":
-      console.log("selecting", { ...state, selected: action.payload });
       return { ...state, selected: action.payload };
     case "CHANGE_SONG": {
       let i = 0;
