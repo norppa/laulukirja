@@ -3,6 +3,11 @@ import { connect } from 'react-redux'
 import { FaArrowLeft, FaArrowRight, FaRandom, FaWrench, FaInfo, FaEdit } from 'react-icons/fa'
 
 class SongActions extends React.Component {
+    toggleEditView = () => {
+        this.props.dispatch({ type: 'TOGGLE_VIEW_EDIT'})
+        this.props.updateViewOrSave()
+    }
+
     render() {
         return (
             <div className="SongActions">
@@ -13,14 +18,10 @@ class SongActions extends React.Component {
                 <FaInfo
                     className="song-menu-right"
                     size={42}
-                    onClick={() => this.props.dispatch({ type: 'TOGGLE_VIEW', payload: 'showInfo' })}
+                    onClick={() => this.props.dispatch({ type: 'TOGGLE_VIEW_INFO'})}
                 />
                 {this.props.admin ? (
-                    <FaEdit
-                        className="song-menu-right"
-                        size={42}
-                        onClick={() => this.props.dispatch({ type: 'LOG_OUT' })}
-                    />
+                    <FaEdit className="song-menu-right" size={42} onClick={this.toggleEditView} />
                 ) : null}
             </div>
         )

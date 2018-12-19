@@ -1,0 +1,9 @@
+.AddNew {
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 3px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 10px;
+    cursor: pointer;
+}

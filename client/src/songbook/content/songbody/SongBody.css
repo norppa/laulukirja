@@ -1,0 +1,19 @@
+.SongBody {
+    white-space: pre;
+    border: 1px solid gray;
+    font-family: "Courier New";
+
+}
+
+.hidden {
+    display: none;
+}
+
+.fade {
+    color: gray;
+}
+
+.highlight {
+    background-color: lightgray;
+    color: blue;
+}

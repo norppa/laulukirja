@@ -1,5 +1,26 @@
 const Music = require('./Music')
 
+describe('isChordRow tests', () => {
+    it('empty line is not a chord row', () => {
+        expect(Music.isChordRow('')).toBe(false)
+    })
+
+    it('should figure out its not a chord row if theres non-chord letters', () => {
+        expect(Music.isChordRow('Test row one')).toBe(false)
+        expect(Music.isChordRow('Gm       Am      S     Bm')).toBe(false)
+    })
+
+    it('simple chord rows', () => {
+        expect(Music.isChordRow('Gm        Am          Dm')).toBe(true)
+        expect(Music.isChordRow('Bm')).toBe(true)
+    })
+
+    it('compact chord rows', () => {
+        expect(Music.isChordRow('Test row one')).toBe(false)
+        expect(Music.isChordRow('Gm       Am      S     Bm')).toBe(false)
+    })
+})
+
 describe('transposeRow tests', () => {
     it('null transpose returns unchanged', () => {
         const row = 'C   F        G7    C'

@@ -17,7 +17,8 @@
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
-    "mongoose": "^5.3.16"
+    "mongoose": "^5.3.16",
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "concurrently": "^4.1.0",

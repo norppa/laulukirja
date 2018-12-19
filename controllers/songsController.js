@@ -2,12 +2,12 @@ const router = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Song = require('../models/Song')
 
-const authError = (request) => {
+const authError = request => {
     const authorization = request.get('authorization')
     console.log('auth', authorization)
     console.log(!authorization.toLowerCase())
     console.log(!authorization.toLowerCase().startsWith('bearer '))
-    console.log(authorization.substring(0,7))
+    console.log(authorization.substring(0, 7))
     if (!authorization || !authorization.toLowerCase().startsWith('bearer ')) {
         return { error: 'bearer token required' }
     }
@@ -37,27 +37,32 @@ router.post('/', (request, response) => {
 })
 
 router.put('/:id', (request, response) => {
-    const input = request.body
-    const song = new Song({
-        name: input.name,
-        lyrics: input.lyrics,
-        recording: input.recording,
-        chorded: input.chorded
-    })
-    Song.findOneAndUpdate({_id: request.params.id}, song, {new: true} )
-    .then(updatedSong => {
-        console.log(updatedSong)
-        response.json(updatedSong)
-    })
-    .catch(error => {
-        console.log(error)
-        response.status(400).send({error: 'malformatted id'})
-    })
+    Song.findOneAndUpdate({ _id: request.params.id }, request.body, { new: true })
+        .then(updatedSong => {
+            console.log(updatedSong)
+            response.json(updatedSong)
+        })
+        .catch(error => {
+            console.log(error)
+            response.status(400).send({ error: 'malformatted id' })
+        })
 })
 
 router.delete('/:id', (request, response) => {
-    Song.remove({_id: request.params.id})
-    .then(result => response.status(204).send())
+    Song.remove({ _id: request.params.id }).then(result => response.status(204).send())
 })
+
+const getSong = input => {
+    const songFields = ['title', 'composer', 'lyricist', 'performer', 'recording', 'info', 'body']
+    const songInput = songFields.reduce((acc, cur) => {
+        if (input[cur]) {
+            return { ...acc, [cur]: input[cur] }
+        } else {
+            return acc
+        }
+    }, {})
+    songInput.foo = 0
+    return songInput
+}
 
 module.exports = router

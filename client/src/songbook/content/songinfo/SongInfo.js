@@ -40,7 +40,8 @@ class SongInfo extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        song: state.songs.songs[state.songs.selected]
+        song: state.songs.songs[state.songs.selected],
+        show: state.view.showInfo
     }
 }
 export default connect(mapStateToProps)(SongInfo)

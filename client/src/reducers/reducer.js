@@ -1,23 +1,39 @@
 import { combineReducers } from 'redux'
 
-const initialSongs = {
+const initialState = {
     songs: [],
-    selected: null,
-    viewStates: []
+    active: { body: [] },
+    addNew: false,
+    readyToSave: false
 }
 
-const initialViewState = {
-    showInfo: false
-}
+const emptySong = { title: '', composer: '', lyricist: '', performer: '', recording: '', info: '', body: [] }
 
-const songReducer = (state = initialSongs, action) => {
+const songReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'SET_ALL_SONGS':
-            return {
-                ...state,
-                songs: action.payload,
-                viewStates: action.payload.map(song => initialViewState)
+        case 'SET_SONGS':
+            return { ...state, songs: action.payload }
+        case 'SET_ACTIVE':
+            return { ...state, active: action.payload }
+        case 'SET_ACTIVE_ID':
+            return { ...state, active: state.songs.find(song => song._id === action.payload) }
+        case 'NEW_SONG':
+            return { ...state, active: emptySong, addNew: true, readyToSave: false }
+        case 'SET_ACTIVE_PROP':
+            const active = {...state.active, [action.payload.prop]: action.payload.value}
+            return { ...state, active}
+        case 'SET_READY_TO_SAVE':
+            return { ...state, readyToSave: action.payload}
+        case 'PUT_SONG':
+            let songs = [...state.songs ]
+            for (let i=0; i< songs.length; i++) {
+                if (songs[i]._id === action.payload._id) {
+                    songs[i] = action.payload
+                    return { ...state, songs }
+                }
             }
+            songs.push(action.payload)
+            return {...state, songs}
         case 'SELECT_SONG':
             return { ...state, selected: action.payload }
         case 'CHANGE_SONG': {
@@ -31,18 +47,22 @@ const songReducer = (state = initialSongs, action) => {
             }
             return { ...state, selected: i }
         }
-        case 'TOGGLE_VIEW': {
-            const i = state.selected
-            const oldViewState = state.viewStates[i]
-            const newViewState = { ...oldViewState, [action.payload]: !oldViewState[action.payload] }
-
-            return {
-                ...state,
-                viewStates: state.viewStates.map((viewState, j) => (j === i ? newViewState : viewState))
-            }
-        }
         default:
-            console.log('Got a dispatch that doesnt match:', action.type)
+            return state
+    }
+}
+
+const viewReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'OPEN_EDIT_VIEW':
+            return { ...state, showEdit: true }
+        case 'TOGGLE_VIEW_EDIT':
+            return { ...state, showEdit: !state.showEdit }
+        case 'TOGGLE_VIEW_INFO':
+            return { ...state, showInfo: !state.showInfo }
+        case 'SET_VIEW_TOOLS':
+            return { ...state, viewTools: action.payload }
+        default:
             return state
     }
 }
@@ -61,5 +81,6 @@ const loginReducer = (state = {}, action) => {
 
 export default combineReducers({
     songs: songReducer,
-    login: loginReducer
+    login: loginReducer,
+    view: viewReducer
 })
