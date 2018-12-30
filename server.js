@@ -19,7 +19,7 @@ app.use('/api/songs', songsController)
 app.use('/api/login', loginController)
 
 app.get('*', (req,res) => {
-    res.sendFile('/client/build/index.html');
+    res.sendFile(path.resolve(__dirname, 'client/build/index.html'))
 });
 
 app.listen(process.env.PORT, () => console.log('Server listening on port ' + process.env.PORT))

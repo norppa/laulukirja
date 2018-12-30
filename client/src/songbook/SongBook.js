@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 import SideBar from './sidebar/SideBar'
@@ -30,12 +30,17 @@ class SongBook extends React.Component {
         }
     }
 
+    toFrontPage = () => {
+        this.props.dispatch({ type: 'SET_ACTIVE', payload: undefined })
+    }
+
     render() {
+
         return (
             <div className="SongBook">
                 <div className="Header">
-                    <Link id="site-header-link" to="/">
-                        <h1>Laulukirja</h1>
+                    <Link to="/" id="site-header-link">
+                        <h1 onClick={this.toFrontPage}>Laulukirja</h1>
                     </Link>
                 </div>
 

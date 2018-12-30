@@ -35,6 +35,11 @@ class AdminTools extends React.Component {
             .catch(error => console.log('error', error))
     }
 
+    logout = () => {
+        this.props.dispatch({type: 'LOG_OUT'})
+        this.props.dispatch({type: 'TOGGLE_VIEW_EDIT'})
+    }
+
     render() {
         if (!this.props.show) return null
 
@@ -43,7 +48,7 @@ class AdminTools extends React.Component {
         return (
             <div className="AdminTools">
                 <div className="admin-tools-headers">
-                    <div /> <button onClick={this.props.logout}>kirjaudu ulos</button>
+                    <div /> <button onClick={this.logout}>kirjaudu ulos</button>
                     <label>Kappaleen nimi</label>
                     <input type="text" value={title} onChange={this.edit('title')} />
                     <label>Säveltäjä</label>
