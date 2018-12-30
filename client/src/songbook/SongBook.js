@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 import SideBar from './sidebar/SideBar'
@@ -22,7 +23,7 @@ class SongBook extends React.Component {
             const songId = this.props.match.params.id
             for (let i = 0; i < songs.length; i++) {
                 if (songs[i]._id === songId) {
-                    this.props.dispatch({ type: 'SET_ACTIVE', payload: songs[i] })
+                    this.props.dispatch({ type: 'SET_ACTIVE', payload: i })
                     break
                 }
             }
@@ -30,15 +31,20 @@ class SongBook extends React.Component {
     }
 
     render() {
-        const key = this.props.song._id ? this.props.song._id : 'content-new-song'
         return (
             <div className="SongBook">
                 <div className="Header">
-                    <h1>Laulukirja</h1>
+                    <Link id="site-header-link" to="/">
+                        <h1>Laulukirja</h1>
+                    </Link>
                 </div>
 
                 <SideBar />
-                <Content key={key} />
+                {this.props.active !== undefined ? (
+                    <Content key={`content-song-${this.props.active}`} />
+                ) : (
+                    <FrontPage />
+                )}
             </div>
         )
     }
@@ -46,7 +52,7 @@ class SongBook extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        song: state.songs.active,
+        active: state.songs.active,
         admin: state.login.admin
     }
 }

@@ -35,6 +35,12 @@ describe('transposeRow tests', () => {
         expect(Music.transposeRow(a, 4)).toBe(b)
         expect(Music.transposeRow(a, -3)).toBe(c)
     })
+
+    it('A#m to Bm', () => {
+        const a = 'A#m              F#m A#m'
+        const b = 'Bm               Gm  Bm'
+        expect(Music.transposeRow(a, 1)).toBe(b)
+    })
 })
 
 describe('transposeChord tests', () => {
@@ -117,6 +123,12 @@ describe('transposeNote tests', () => {
         expect(Music.transposeNote('c', 2)).toBe(undefined)
         expect(Music.transposeNote('S', 2)).toBe(undefined)
         expect(Music.transposeNote(null, 2)).toBe(undefined)
+    })
+
+    it('transposes interval of one', () => {
+        expect(Music.transposeNote('A#', 1)).toBe('B')
+        expect(Music.transposeNote('D', 1)).toBe('D#')
+        expect(Music.transposeNote('E', 1)).toBe('F')
     })
 
     it('transposes positive intervals', () => {

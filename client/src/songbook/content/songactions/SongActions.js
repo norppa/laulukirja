@@ -5,7 +5,7 @@ import { FaArrowLeft, FaArrowRight, FaRandom, FaWrench, FaInfo, FaEdit } from 'r
 class SongActions extends React.Component {
     toggleEditView = () => {
         this.props.dispatch({ type: 'TOGGLE_VIEW_EDIT'})
-        this.props.updateViewOrSave()
+        this.props.updateView()
     }
 
     render() {
@@ -14,7 +14,7 @@ class SongActions extends React.Component {
                 <FaArrowLeft size={42} onClick={() => this.props.dispatch({ type: 'CHANGE_SONG', payload: -1 })} />
                 <FaRandom size={42} onClick={() => this.props.dispatch({ type: 'CHANGE_SONG', payload: 'random' })} />
                 <FaArrowRight size={42} onClick={() => this.props.dispatch({ type: 'CHANGE_SONG', payload: 1 })} />
-                <FaWrench className="song-menu-right" size={42} onClick={null} />
+                <FaWrench className="song-menu-right" size={42} onClick={() => this.props.dispatch({type: 'TOGGLE_VIEW_TOOLS'})} />
                 <FaInfo
                     className="song-menu-right"
                     size={42}

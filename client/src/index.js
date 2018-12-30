@@ -13,7 +13,6 @@ ReactDOM.render(
         <BrowserRouter>
             <Switch>
                 <Route exact path="/" component={SongBook} />
-                <Route path="/new" component={() => <SongBook arrivedFromLink={true} />} />
                 <Route path="/songs/:id" component={SongBook} />
                 <Route path="/login" component={Login} />
             </Switch>

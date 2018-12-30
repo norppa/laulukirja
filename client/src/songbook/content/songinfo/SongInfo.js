@@ -18,11 +18,9 @@ class SongInfo extends React.Component {
     }
 
     render() {
-        if (!this.props.show) {
-            return ''
-        }
+        if (!this.props.show) return null
 
-        const { title, composer, lyricist, performer, recording, info } = this.props.song
+        const { composer, lyricist, performer, recording, info } = this.props.song
 
         return (
             <div className="SongInfo">
@@ -40,7 +38,7 @@ class SongInfo extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        song: state.songs.songs[state.songs.selected],
+        song: state.songs.songs[state.songs.active],
         show: state.view.showInfo
     }
 }

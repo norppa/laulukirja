@@ -5,10 +5,10 @@ export const isChordRow = row => {
     const words = row.split(/\s/)
 
     // check that none of the words start with non-chord character
-    for (let i=0; i < words.length; i++) {
+    for (let i = 0; i < words.length; i++) {
         const notes = 'ABCDEFGH'
         if (!notes.includes(words[i].charAt(0))) {
-            return false;
+            return false
         }
     }
 
@@ -26,9 +26,7 @@ export const toString = (song, options = {}) => {
     }
 
     let rows = song.body
-    console.log(rows)
     if (options.hideChords) {
-        console.log(123)
         rows = rows.filter(row => !row.cho)
     }
 
@@ -41,7 +39,7 @@ export const toString = (song, options = {}) => {
     return output
 }
 
-export const interval = (from, to) => {
+export const getInterval = (from, to) => {
     if (from === to) return null
     const idx1 = noteMap[from]
     const idx2 = noteMap[to]
@@ -87,9 +85,7 @@ export const transposeNote = (note, semitones) => {
 export const transposeChord = (chord, semitones) => {
     const bassIdx = chord.indexOf('/') + 1
     if (bassIdx > 0 && chord.length > bassIdx) {
-        chord =
-            chord.substring(0, bassIdx) +
-            transposeNote(chord.substring(bassIdx), semitones)
+        chord = chord.substring(0, bassIdx) + transposeNote(chord.substring(bassIdx), semitones)
     }
     let baseLen = 0
     const accidental = chord.charAt(1)
@@ -145,6 +141,20 @@ export const transposeRow = (row, semitones) => {
         }
         previousIndex = i
         isChord = !isChord
+    })
+    return output
+}
+
+export const transposeBody = (body, semitones) => {
+    const semitonesInt = parseInt(semitones)
+    const output = body.map(row => {
+        if (row.type === 'chord') {
+            return {
+                type: 'chord',
+                value: transposeRow(row.value, semitonesInt)
+            }
+        }
+        return row
     })
     return output
 }

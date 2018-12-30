@@ -5,17 +5,30 @@ import SongBody from './songbody/SongBody'
 import SongActions from './songactions/SongActions'
 import SongInfo from './songinfo/SongInfo'
 import AdminTools from './admintools/AdminTools'
+import SongTools from './songtools/SongTools'
+
+import { Redirect } from 'react-router-dom'
 import './Content.css'
 
 class Content extends React.Component {
+    state = { redirect: false }
     songBody = React.createRef()
 
+    options = { chords: '', transpose: { transpose: false } }
+
     componentDidMount = () => {
-        this.songBody.current.setContent(this.props.song.body)
+        this.songBody.current.setContent(this.props.song.body, this.options)
+    }
+
+    componentDidUpdate = prevProps => {
+        if (this.props.showEdit !== prevProps.showEdit) {
+            console.log('1')
+            this.options = { ...this.options, chords: this.props.showEdit ? 'highlight' : '' }
+            this.updateView(this.options)
+        }
     }
 
     save = () => {
-        console.log('trying to save this', this.props.song)
         if (this.props.addNew) {
             axios
                 .post('/api/songs/', this.props.song, {
@@ -23,7 +36,7 @@ class Content extends React.Component {
                 })
                 .then(result => {
                     console.log('result', result)
-                    this.props.dispatch({ type: 'PUT_SONG', payload: result.data })
+                    this.setState({ redirect: result.data._id })
                 })
                 .catch(error => console.log('error', error))
         } else {
@@ -43,9 +56,13 @@ class Content extends React.Component {
         if (this.props.readyToSave) {
             this.save()
         } else {
-            this.songBody.current.update()
-            this.props.dispatch({ type: 'SET_READY_TO_SAVE', payload: true })
+            this.updateView()
         }
+    }
+
+    updateView = () => {
+        this.songBody.current.update(this.options)
+        this.props.dispatch({ type: 'SET_READY_TO_SAVE', payload: true })
     }
 
     onChange = () => {
@@ -59,15 +76,29 @@ class Content extends React.Component {
         this.props.dispatch({ type: 'SET_READY_TO_SAVE', payload: false })
     }
 
+    setSongBody = body => {
+        this.props.dispatch({
+            type: 'SET_ACTIVE_PROP',
+            payload: {
+                prop: 'body',
+                value: body
+            }
+        })
+        this.props.dispatch({ type: 'SET_READY_TO_SAVE', payload: false })
+        this.songBody.current.setContent(body, this.options)
+    }
+
     render() {
-        const options = this.props.admin ? { chords: 'highlight' } : {}
+        if (this.state.redirect) return <Redirect to={`/songs/${this.state.redirect}`} />
+
         return (
             <div className="Content roundedbox">
                 <h2>{this.props.song.title}</h2>
-                <SongActions updateViewOrSave={this.updateViewOrSave} />
+                <SongActions updateView={this.updateView} />
                 <SongInfo />
+                <SongTools setSongBody={this.setSongBody} />
                 <AdminTools updateViewOrSave={this.updateViewOrSave} onChange={this.onChange} />
-                <SongBody ref={this.songBody} onChange={this.onChange} edit={!!this.props.admin} options={options} />
+                <SongBody ref={this.songBody} onChange={this.onChange} edit={this.props.showEdit} />
             </div>
         )
     }
@@ -75,11 +106,11 @@ class Content extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        song: state.songs.active,
+        song: state.songs.songs[state.songs.active],
         readyToSave: state.songs.readyToSave,
         addNew: state.songs.addNew,
-        view: state.view,
-        admin: state.login.admin
+        admin: state.login.admin,
+        showEdit: state.view.showEdit
     }
 }
 

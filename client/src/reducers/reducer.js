@@ -2,38 +2,56 @@ import { combineReducers } from 'redux'
 
 const initialState = {
     songs: [],
-    active: { body: [] },
+    active: undefined,
     addNew: false,
     readyToSave: false
 }
-
-const emptySong = { title: '', composer: '', lyricist: '', performer: '', recording: '', info: '', body: [] }
 
 const songReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_SONGS':
             return { ...state, songs: action.payload }
+        case 'SET_SONG':
+            return {
+                ...state,
+                songs: state.songs.map((song, i) => {
+                    if (i === state.active) {
+                        return action.payload
+                    }
+                    return song
+                })
+            }
         case 'SET_ACTIVE':
             return { ...state, active: action.payload }
-        case 'SET_ACTIVE_ID':
-            return { ...state, active: state.songs.find(song => song._id === action.payload) }
         case 'NEW_SONG':
-            return { ...state, active: emptySong, addNew: true, readyToSave: false }
-        case 'SET_ACTIVE_PROP':
-            const active = {...state.active, [action.payload.prop]: action.payload.value}
-            return { ...state, active}
+            return {
+                ...state,
+                songs: state.songs.concat({ title: '', body: [] }),
+                active: state.songs.length,
+                addNew: true,
+                readyToSave: false
+            }
+        case 'CANCEL_NEW_SONG':
+            return { songs: state.songs.slice(0, state.songs.length - 1) }
+        case 'SET_ACTIVE_PROP': {
+            const songs = state.songs.map((song, i) => {
+                if (i !== state.active) return song
+                return { ...song, [action.payload.prop]: action.payload.value }
+            })
+            return { ...state, songs }
+        }
         case 'SET_READY_TO_SAVE':
-            return { ...state, readyToSave: action.payload}
+            return { ...state, readyToSave: action.payload }
         case 'PUT_SONG':
-            let songs = [...state.songs ]
-            for (let i=0; i< songs.length; i++) {
+            let songs = [...state.songs]
+            for (let i = 0; i < songs.length; i++) {
                 if (songs[i]._id === action.payload._id) {
                     songs[i] = action.payload
                     return { ...state, songs }
                 }
             }
             songs.push(action.payload)
-            return {...state, songs}
+            return { ...state, songs }
         case 'SELECT_SONG':
             return { ...state, selected: action.payload }
         case 'CHANGE_SONG': {
@@ -47,6 +65,8 @@ const songReducer = (state = initialState, action) => {
             }
             return { ...state, selected: i }
         }
+        case 'DELETE_ACTIVE':
+            return { songs: state.songs.filter((song, i) => i !== state.active) }
         default:
             return state
     }
@@ -60,8 +80,8 @@ const viewReducer = (state = {}, action) => {
             return { ...state, showEdit: !state.showEdit }
         case 'TOGGLE_VIEW_INFO':
             return { ...state, showInfo: !state.showInfo }
-        case 'SET_VIEW_TOOLS':
-            return { ...state, viewTools: action.payload }
+        case 'TOGGLE_VIEW_TOOLS':
+            return { ...state, showTools: !state.showTools }
         default:
             return state
     }

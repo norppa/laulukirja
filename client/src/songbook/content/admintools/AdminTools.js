@@ -1,8 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import axios from 'axios'
 import './AdminTools.css'
 
 class AdminTools extends React.Component {
+    state = { delete: false }
 
     edit = prop => event => {
         const action = {
@@ -10,6 +13,26 @@ class AdminTools extends React.Component {
             payload: { prop, value: event.target.value }
         }
         this.props.dispatch(action)
+    }
+
+    cancel = () => {
+        this.props.dispatch({ type: 'CANCEL_NEW_SONG' })
+    }
+
+    delete = () => {
+        if (!this.state.delete) {
+            this.setState({ delete: true })
+            setTimeout(() => this.setState({ delete: false }), 5000)
+            return
+        }
+        axios
+            .delete('/api/songs/' + this.props.song._id, this.props.song, {
+                headers: { authorization: 'bearer ' + this.props.admin }
+            })
+            .then(result => {
+                this.props.dispatch({ type: 'DELETE_ACTIVE' })
+            })
+            .catch(error => console.log('error', error))
     }
 
     render() {
@@ -36,7 +59,17 @@ class AdminTools extends React.Component {
                     <div />
                     <div>
                         <button onClick={this.props.updateViewOrSave}>{buttonTitle}</button>
-                        <button onClick={this.props.delete}>poista</button>
+                        {this.props.addNew ? (
+                            <Link to="/">
+                                <button onClick={this.cancel}>peruuta</button>
+                            </Link>
+                        ) : (
+                            <Link to="/">
+                                <button onClick={this.delete} style={{ color: this.state.delete ? 'red' : 'black' }}>
+                                    {this.state.delete ? 'varmista poisto' : 'poista'}
+                                </button>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
@@ -46,7 +79,8 @@ class AdminTools extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        song: state.songs.active,
+        song: state.songs.songs[state.songs.active],
+        addNew: state.songs.addNew,
         readyToSave: state.songs.readyToSave,
         show: state.view.showEdit
     }

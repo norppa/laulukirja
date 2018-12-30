@@ -1,38 +1,31 @@
 import React from 'react'
 
-import { isChordRow, transposeRow } from '../../../tools/Music'
+import { isChordRow } from '../../../tools/Music'
 
 import './SongBody.css'
 
 class SongBody extends React.Component {
     contentEditable = React.createRef()
 
-    update = () => {
+    componentDidUpdate(prevProps) {
+        if (this.props.options !== prevProps.options) {
+            this.setContent(this.htmlToBodyArray())
+        }
+    }
+
+    update = (options) => {
         const rows = this.htmlToBodyArray()
-        this.setContent(rows)
+        this.setContent(rows, options)
     }
 
     getContent = () => {
         return this.htmlToBodyArray()
     }
 
-    setContent = rows => {
+    setContent = (rows, options) => {
         const target = this.contentEditable.current
 
         target.innerHTML = ''
-
-        const options = this.props.options ? this.props.options : {}
-        if (options.transpose) {
-            rows = rows.map(row => {
-                if (row.type === 'chord') {
-                    return {
-                        type: 'chord',
-                        value: transposeRow(row.value, options.transpose)
-                    }
-                }
-                return row
-            })
-        }
 
         if (options.wrap) {
             //figure out row width in chars
@@ -72,10 +65,14 @@ class SongBody extends React.Component {
         rows.forEach(row => {
             const div = document.createElement('div')
             div.classList.add(row.type + '-row')
-            if (row.type === 'chord') {
+            if (options.chords && row.type === 'chord') {
                 div.classList.add(options.chords)
             }
-            div.appendChild(document.createTextNode(row.value))
+            if (row.value !== '') {
+                div.appendChild(document.createTextNode(row.value))
+            } else {
+                div.appendChild(document.createElement('br'))
+            }
             target.appendChild(div)
         })
     }
@@ -99,6 +96,7 @@ class SongBody extends React.Component {
     }
 
     render() {
+
         return (
             <div
                 className="SongBody"

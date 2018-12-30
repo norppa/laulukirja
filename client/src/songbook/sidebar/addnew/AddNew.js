@@ -15,7 +15,7 @@ class AddNew extends React.Component {
 
         return (
             <div className="AddNew">
-                <Link to={`/new`}>
+                <Link to={`/songs/new`}>
                     <div onClick={this.addNewSong}>
                         Lisää uusi kappale
                     </div>
