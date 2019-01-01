@@ -17,13 +17,16 @@ class Content extends React.Component {
     options = { chords: '', transpose: { transpose: false } }
 
     componentDidMount = () => {
+        if (this.props.showEdit) {
+            this.options.chords = 'highlight'
+        }
+        console.log(this.options)
         this.songBody.current.setContent(this.props.song.body, this.options)
     }
 
     componentDidUpdate = prevProps => {
         if (this.props.showEdit !== prevProps.showEdit) {
-            console.log('1')
-            this.options = { ...this.options, chords: this.props.showEdit ? 'highlight' : '' }
+            this.options.chords = this.props.showEdit ? 'highlight' : ''
             this.updateView(this.options)
         }
     }

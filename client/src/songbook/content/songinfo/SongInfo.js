@@ -3,12 +3,15 @@ import { connect } from 'react-redux'
 
 class SongInfo extends React.Component {
 
+    empty = true
+
     createDiv = (name, value, opt = {}) => {
         if (!value) return null
         const title = name ? <span style={{marginRight: '0.5em'}}>{name}:</span> : name
         const content = opt.link
             ? <a href={value}>{value}</a>
             : value
+        this.empty = false
         return (
             <div style={opt.style}>
                 {title} {content}
@@ -30,6 +33,7 @@ class SongInfo extends React.Component {
                     {this.createDiv('Esittäjä', performer)}
                     {this.createDiv('Tallenne', recording, {link: true})}
                     {this.createDiv(null, info, {style: {marginTop: '0.5em'}})}
+                    {this.empty ? 'Kappaleeseen ei ole tallennettu tietoja' : null}
                 </div>
             </div>
         )

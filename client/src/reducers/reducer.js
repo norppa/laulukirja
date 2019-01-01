@@ -52,18 +52,16 @@ const songReducer = (state = initialState, action) => {
             }
             songs.push(action.payload)
             return { ...state, songs }
-        case 'SELECT_SONG':
-            return { ...state, selected: action.payload }
         case 'CHANGE_SONG': {
             let i = 0
             if (isNaN(action.payload)) {
                 i = Math.floor(Math.random() * state.songs.length)
             } else {
                 const l = state.songs.length
-                i = state.selected + action.payload
+                i = state.active + action.payload
                 i = i < 0 ? (i % l) + l : i % l
             }
-            return { ...state, selected: i }
+            return { ...state, active: i }
         }
         case 'DELETE_ACTIVE':
             return { songs: state.songs.filter((song, i) => i !== state.active) }

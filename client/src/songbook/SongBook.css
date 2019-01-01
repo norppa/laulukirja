@@ -34,8 +34,11 @@
     color: #eeeeee;
     font-size: 2em;
     letter-spacing: 8px;
-    text-shadow: 10px 10px 3px rgba(0, 0, 0, 0.65);
-    padding: 0px;
+    text-shadow:
+        5px 5px 2px rgba(0, 0, 0, 0.65),
+        -5px -5px 2px rgba(0, 0, 0, 0.65),
+        -5px 5px 2px rgba(0, 0, 0, 0.65),
+        5px -5px 2px rgba(0, 0, 0, 0.65);
 }
 
 h1 {

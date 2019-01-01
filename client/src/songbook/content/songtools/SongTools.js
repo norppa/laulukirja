@@ -23,10 +23,8 @@ class SongTools extends React.Component {
                 const chords = body[i].value.split(/\s+/)
                 const lastChord = chords[chords.length - 1]
                 if (lastChord.charAt(1) === '#' || lastChord.charAt(1) === 'b') {
-                    console.log('guessing', lastChord.substring(0, 2))
                     return lastChord.substring(0, 2)
                 } else {
-                    console.log('guessing', lastChord.substring(0, 1))
                     return lastChord.substring(0, 1)
                 }
             }
